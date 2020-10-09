@@ -1,6 +1,10 @@
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/*
+* 生成算术表达式，未经过合法性检验
+* */
+
 public class expTest {
     public String expression (String str){
         int e1= (int) (Math.random()*10);
@@ -17,14 +21,14 @@ public class expTest {
 
         for(int i = 0; i < 3; i++){
             int k = (int) (Math.random()*10%4);
-            str += ints[k];
-            str += chars[k];
+            str += ints[k] + " ";
+            str += chars[k]+ " ";//操作数与运算符需用空格隔开，以便后续区分÷和/
 
         }
         int k = (int) (Math.random()*10%4);
-        str += ints[k];
+        str += ints[k] ;
 
-        System.out.println(str+"=");
+        System.out.println(str+" = ");
         return str;
     }
 
@@ -32,18 +36,18 @@ public class expTest {
         int result = 0;
         switch (ch){
             case '+':
-                result = a+b;
+                result = a + b;
                 break;
             case '-':
-                result = a-b;
+                result = a - b;
                 break;
 
             case '*':
-                result = a*b;
+                result = a * b;
                 break;
             case '/':
 
-                result = a/b;
+                result = a / b;
                 break;//应对真分数进行处理
 
         }

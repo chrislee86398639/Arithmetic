@@ -1,138 +1,160 @@
+import java.util.Random;
+import java.util.Stack;
 
+/*
+ * 构建一个分数类，用来表示分数，封装相关的方法
+ */
 public class Fraction {
-    public static void main(String[] args)
-    {
-        TestFraction f1=new TestFraction(14,21);//给出操作数f1的分子分母
-        TestFraction f2=new TestFraction(20,30);//给出操作数f2的分子分母
-        TestFraction f3;//运算结果
 
-        f3=f1.plus(f2);//加法
-        System.out.println(f1+"+"+f2+"= "+f3);
-        f3=f1.minus(f2);//减法
-        System.out.println(f1+"-"+f2+"= "+f3);
-        f3=f1.multiply(f2);//乘法
-        System.out.println(f1+"*"+f2+"= "+f3);
-        f3=f1.divide(f2);//除法
-        System.out.println(f1+"/"+f2+"= "+f3);
-    }
-}
+    private int denominator;// 分母
+    private int numerator;// 分子
 
-class TestFraction
-{
-    private int c;//分子c
-    private int d;//分母d
-
-    public TestFraction()				//默认构造函数，分子分母都为1。
-    {
-        c=1;
-        d=1;
+    // 构建一个分数
+    public Fraction( int numerator,int denominator) {
+        super();
+        this.denominator = denominator;
+        this.numerator = numerator;
     }
 
-    public TestFraction(int a,int b)	//带参数构造函数，判断分母是否为0。
-    {
-        if(b==0)
-        {
-            System.out.println("分母 不能为0!");
-            System.exit(0);
-        }
-        c=a;
-        d=b;
-        selfTrim();
+    public Fraction(int numerator) {
+        this.denominator = 1;
+        this.numerator = numerator;
     }
 
-    public int getNumerator()	//获得分子c
-    {
-        return c;
-    }
-    public int getDinominator()	//获得分母d
-    {
-        return d;
+    public Fraction() {
+        super();
     }
 
-    public void selfTrim()	//公约数化简，整理正负号
-    {
-        int maxCommon=commonDivisor(c,d);	//求出两个数的最大公约数。
-        c=c/maxCommon;                  	//分式为最简。
-        d=d/maxCommon;
-        //整理正负号。
-        if((c>0&&d<0)||(c<0&&d<0))
-        {
-            c=-c;
-            d=-d;
+    // 判断构建的是一个分数还是一个整数，不超过limit的数值
+    public Fraction(boolean l, int limit) {
+        Random r = new Random();
+        // 这是一个分数
+        if (l == true) {
+            int index = r.nextInt(limit);
+            int index2 = r.nextInt(limit);
+
+            while(index==0) {
+                index = r.nextInt(limit);
+//				System.out.println("会生成0："+index);
+            }
+//			System.out.println("不会生成0："+index);
+            this.denominator = index;
+            this.numerator = index2;
+
+            // 这是一个整数
+        } else {
+            int index = r.nextInt(limit);
+            this.denominator = 1;
+            this.numerator = index;
         }
     }
 
-    public String toString()	//重写tostring(). 分母为1 直接输出分子.  分母不为1 输出c/d.
-    {
-        if(c==0||d==1)                          //分母为1 直接输出分子.
-        {
-            return Integer.toString(c);
-        }
-        return Integer.toString(c)+"/"+Integer.toString(d);     //输出c/d.
+    public int getDenominator() {
+        return denominator;
     }
 
-    //减法
-    public TestFraction minus(TestFraction f2)
-    {
-        int newNumerator=c*f2.getDinominator()-f2.getNumerator()*d;
-        int newDinominator=d*f2.getDinominator();
-
-        int maxCommon=commonDivisor(newNumerator,newDinominator);
-        return new TestFraction(newNumerator/maxCommon,newDinominator/maxCommon);
-    }
-    //加法
-    public TestFraction plus(TestFraction f2)
-    {
-        int newNumerator=c*f2.getDinominator()+f2.getNumerator()*d;
-        int newDinominator=d*f2.getDinominator();
-
-        int maxCommon=commonDivisor(newNumerator,newDinominator);
-        return new TestFraction(newNumerator/maxCommon,newDinominator/maxCommon);
-    }
-    //乘法
-    public TestFraction multiply(TestFraction f2)
-    {
-        int newNumerator=c*f2.getNumerator();
-        int newDinominator=d*f2.getDinominator();
-
-        int maxCommon=commonDivisor(newNumerator,newDinominator);
-        return new TestFraction(newNumerator/maxCommon,newDinominator/maxCommon);
-    }
-    //除法
-    public TestFraction divide(TestFraction f2)
-    {
-        if(f2.getNumerator()==0)
-        {
-            System.out.println("0不能做除数！");
-            System.exit(0);
-        }
-        TestFraction result=new TestFraction();
-        int newNumerator=c*f2.getDinominator();
-        int newDinominator=d*f2.getNumerator();
-
-        int maxCommon=commonDivisor(newNumerator,newDinominator);
-        return new TestFraction(newNumerator/maxCommon,newDinominator/maxCommon);
+    public void setDenominator(int denominator) {
+        this.denominator = denominator;
     }
 
-    //计算2个数的最大公约数。按绝对值计算。
-    public static  int commonDivisor(int x,int y)
-    {
-        if(x==0||y==0)
-        {
+    public int getNumerator() {
+        return numerator;
+    }
+
+    public void setNumerator(int numerator) {
+        this.numerator = numerator;
+    }
+
+
+
+    // 加法运算
+    public Fraction add(Fraction r) {
+        int a = r.getNumerator();// 获得分子
+        int b = r.getDenominator();// 获得分母
+        int newNumerator = numerator * b + denominator * a;
+        int newDenominator = denominator * b;
+        Fraction result = new Fraction(newNumerator,newDenominator);
+        return result;
+    }
+
+    // 减法运算
+    public Fraction sub(Fraction r) {
+        int a = r.getNumerator();// 获得分子
+        int b = r.getDenominator();// 获得分母
+        int newNumerator = numerator * b - denominator * a;
+        int newDenominator = denominator * b;
+        Fraction result = new Fraction(newNumerator,newDenominator);
+        return result;
+    }
+
+    // 分数的乘法运算
+    public Fraction muti(Fraction r) { // 乘法运算
+        int a = r.getNumerator();// 获得分子
+        int b = r.getDenominator();// 获得分母
+        int newNumerator = numerator * a;
+        int newDenominator = denominator * b;
+        Fraction result = new Fraction(newNumerator,newDenominator);
+        return result;
+    }
+
+    // 分数除法运算
+    public Fraction div(Fraction r) {
+        int a = r.getNumerator();// 获得分子
+        int b = r.getDenominator();// 获得分母
+        int newNumerator = numerator * b;
+        int newDenominator = denominator * a;
+        Fraction result = new Fraction(newNumerator,newDenominator);
+        return result;
+    }
+
+    // 用辗转相除法求最大公约数
+    private static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    // 对分数进行约分
+    public void Appointment() {
+        if (numerator == 0 || denominator == 1)
+            return;
+        // 如果分子是0或分母是1就不用约分了
+        long gcd = gcd(numerator, denominator);
+        this.numerator /= gcd;
+        this.denominator /= gcd;
+    }
+
+    public int existZero(){
+        if(this.numerator<0||this.denominator<0){
+            return 0;
+        }else {
             return 1;
         }
-        int x1;
-        int y1;
+    }
 
-        x1=(Math.abs(x)>Math.abs(y))?Math.abs(x):Math.abs(y);                //使x1>y1.
-        y1=(Math.abs(x)>Math.abs(y))?Math.abs(y):Math.abs(x);
-        int z=1;
-        while(z!=0)
-        {
-            z=x1%y1;
-            x1=y1;
-            y1=z;
-        }
-        return x1;
+    public static void main(String[] args) {
+        Fraction f1 = new Fraction(2,7);
+        Fraction f2 = new Fraction(2,3);
+        Fraction f3 = new Fraction();
+        f3 = f1.add(f2);
+        // fraction3 = fraction1.sub(fraction2);
+        // fraction3 = fraction1.muti(fraction2);
+        //fraction3 = fraction1.div(fraction2);
+
+        int a = f3.numerator;
+        int b = f3.denominator;//结果没有化简.
+        System.out.println("f1+f2:"+a+"/"+b);
+        System.out.println("f1-f2:"+a+"/"+b);
+        System.out.println("f1*f2:"+a+"/"+b);
+        System.out.println("f1/f2:"+a+"/"+b);
+
+        Stack<Fraction> stack = new Stack<>();
+        stack.push(f1);
+        stack.push(f2);
+      //  stack.push(f3);
+        System.out.println(stack);
+        System.out.println("栈顶的分数"+stack.peek().getNumerator()+"/"+stack.peek().getDenominator());
+
+
+
+
     }
 }

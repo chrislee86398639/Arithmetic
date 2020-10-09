@@ -1,4 +1,8 @@
 public class GCD {
+
+    /*
+    * 求得最大公因子，用于分数化简
+    * */
         public static void main(String[] args) {
             System.out.println(gcd(1071,462));
         }

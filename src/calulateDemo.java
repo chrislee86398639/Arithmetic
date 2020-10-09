@@ -5,16 +5,17 @@ import java.util.Queue;
 import java.util.Stack;
 
 /*
-* 中缀转后缀，再通过栈来计算表达式的值
+* 中缀转后缀，再通过栈来计算表达式的值，采用
 * */
-public class stackdemo9 {
+public class calulateDemo {
+
 
     /**
      * 计算表达式的值
      * @param s
      * @return
      */
-    public int calculate(String s) {
+   public int calculate(String s) {
         Queue<String> q = toSuffixExpression(s);
         return solve(q);
     }
@@ -93,6 +94,7 @@ public class stackdemo9 {
      */
     public int solve(Queue<String> queue) {
         Stack<Integer> numberStack = new Stack<>();
+        Stack<Fraction> fractionsStack = new Stack<>();
         while (!queue.isEmpty()) {
             // 从队列中出队
             String s = queue.remove();
@@ -111,9 +113,16 @@ public class stackdemo9 {
                     System.out.println("栈空");
 
                 }
+                //将整数化为分数
+                /*Fraction f1 = new Fraction(val1,1);
+                Fraction f2 = new Fraction(val1,1);
+
+                System.out.println("第一个分数"+f1.getNumerator()+"/"+f1.getDenominator());
+                System.out.println("第二个分数"+f2.getNumerator()+"/"+f2.getDenominator());*/
 
                 switch (c) {
                     case '+': {
+
                         numberStack.push(val2 + val1);
                         break;
                     }
@@ -165,11 +174,86 @@ public class stackdemo9 {
         }
     }
 
+    public Fraction caculate1(Queue<String> queue) {
+        Stack<Fraction> fracStack = new Stack<>();
+        while (!queue.isEmpty()) {
+            // 从队列中出队
+            String s = queue.remove();
+
+            // 如果是数字，就压入栈中
+            if (isDigital(s.charAt(0))) {
+                //parseInt(String s): 返回用十进制参数表示的整数值。
+               // System.out.println("当前操作的数字"+Integer.parseInt(s));
+                Fraction f = new Fraction(Integer.parseInt(s));
+                fracStack.push(f);
+             //   System.out.println("压入栈的f："+f.getNumerator()+"/"+f.getDenominator());
+
+                // 如果是运算符，就从栈中弹出两个元素
+            } else if (isOperator(s.charAt(0))) {
+                char c = s.charAt(0);
+               // System.out.println("当前的运算符"+c);
+                Fraction f = fracStack.pop();
+
+
+
+
+                    //将整数化为分数
+                Fraction f1 = new Fraction(f.getNumerator(),f.getDenominator());
+                f = fracStack.pop();
+                Fraction f2 = new Fraction(f.getNumerator(),f.getDenominator());
+
+                /*  try {
+                    //将整数化为分数
+                    f1 = new Fraction(fracStack.pop().getNumerator(),fracStack.pop().getDenominator());
+                    f2 = new Fraction(fracStack.pop().getNumerator(),fracStack.pop().getDenominator());
+                }catch (EmptyStackException e){
+                    System.out.println("栈空");
+
+                }*/
+
+              /*  System.out.println("第一个分数"+f1.getNumerator()+"/"+f1.getDenominator());
+                System.out.println("第二个分数"+f2.getNumerator()+"/"+f2.getDenominator());*/
+
+
+
+                switch (c) {
+                    case '+': {
+                        fracStack.push(f2.add(f1));
+
+                        break;
+                    }
+                    case '-': {
+
+                        fracStack.push(f2.sub(f1));
+                        break;
+                    }
+                    case '*': {
+
+                        fracStack.push(f2.muti(f1));
+                        break;
+                    }
+                    case '/': {
+                        try {
+
+                            fracStack.push(f2.div(f1));
+
+                        }catch (ArithmeticException e){
+                            System.out.println("分母为零");
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return  fracStack.pop();
+
+    }
+
+
     public static void main(String[] args) throws IOException {
-        fileIO writer = new fileIO();
-        String str2 ="";
-        String str0 = "";
-        String str1 ="";
+
 
         BufferedReader file = null;
         try {
@@ -180,18 +264,27 @@ public class stackdemo9 {
         String str ="";
         while(( str = file.readLine())!=null){
             System.out.println("算术表达式："+str);
-        stackdemo9 expression = new stackdemo9();
+        calulateDemo expression = new calulateDemo();
 
-        Queue<String> queue = expression.toSuffixExpression(str);
+       Queue<String> queue = expression.toSuffixExpression(str);
 
         //输出有误，3*2+2/1-(2-1)，优先级出错：后缀表达式[3, 2, *, 2, 1, /, 2, 1, -, -, +]，
         // 正确的为[3, 2, *, 2, 1, / , +,2, 1, -, -]
-      //  System.out.println("后缀表达式"+queue);
-        System.out.println("后缀表达式的值："+expression.solve(queue));
+       // System.out.println("后缀表达式"+queue);
+          //  String str1 ="";
+         //  String str2 ="";
+        Fraction fraction = expression.caculate1(queue);
+      //  System.out.println("正确答案："+expression.solve(queue));//可以看到表达的过程
+         //   System.out.println("正确答案："+expression.calculate(str));
+            properFraction proFrac = new properFraction();
+            proFrac.transferFraction(fraction.getNumerator(),fraction.getDenominator());
+            System.out.println("标准答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
 
         }
 
     }
+
+
 
 
 }
