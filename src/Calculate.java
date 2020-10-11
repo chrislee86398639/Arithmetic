@@ -19,9 +19,6 @@ public class Calculate {
 
     /**
      * 将中缀表达式转化成后缀表达式
-     *
-     *
-     *
      */
 
     private Queue<String> toSuffixExpression(String s) {//生成后缀表达式
@@ -66,11 +63,15 @@ public class Calculate {
                     // 如果此时遍历的运算符的优先级小于等于此时符号栈栈顶的运算符的优先级，
                     // 则将符号栈的栈顶元素弹出并且放到队列中，并且将正在遍历的符号压入符号栈
                 } else if (priority(c) <= priority(stack.peek())) {
+                    /*queue.add(stack.pop() + "");
+                    stack.push(c);*/
                     queue.add(stack.pop() + "");
+                    while(  !stack.isEmpty() && priority(c) == priority(stack.peek())) {
+                        queue.add(stack.pop() + "");
+                    }
                     stack.push(c);
                 }
             }
-
             index++;
         }
 
@@ -89,64 +90,7 @@ public class Calculate {
      * @param
      * @return
      */
-  /*  public int solve(Queue<String> queue) {//不考虑分数的计算
-        Stack<Integer> numberStack = new Stack<>();
-        Stack<Fraction> fractionsStack = new Stack<>();
-        while (!queue.isEmpty()) {
-            // 从队列中出队
-            String s = queue.remove();
-            // 如果是数字，就压入栈中
-            if (isDigital(s.charAt(0))) {
-                numberStack.push(Integer.parseInt(s));
-                // 如果是运算符，就从栈中弹出两个元素
-            } else if (isOperator(s.charAt(0))) {
-                char c = s.charAt(0);
-                int val1 = 0;
-                int val2 = 0;
-                try {
-                     val1 = numberStack.pop();
-                     val2 = numberStack.pop();
-                }catch (EmptyStackException e){
-                    System.out.println("栈空");
 
-                }
-                //将整数化为分数
-                *//*Fraction f1 = new Fraction(val1,1);
-                Fraction f2 = new Fraction(val1,1);
-
-                System.out.println("第一个分数"+f1.getNumerator()+"/"+f1.getDenominator());
-                System.out.println("第二个分数"+f2.getNumerator()+"/"+f2.getDenominator());*//*
-
-                switch (c) {
-                    case '+': {
-
-                        numberStack.push(val2 + val1);
-                        break;
-                    }
-                    case '-': {
-                        numberStack.push(val2 - val1);
-                        break;
-                    }
-                    case '*': {
-                        numberStack.push(val2 * val1);
-                        break;
-                    }
-                    case '/': {
-                       try {
-                           numberStack.push(val2 / val1);
-                       }catch (ArithmeticException e){
-                           System.out.println("分母为零");
-                           break;
-                       }
-                       break;
-                    }
-                }
-            }
-        }
-
-        return numberStack.pop();
-    }
-*/
     //判断是符号
     private boolean isOperator(char c) {
         return c == '+' || c == '-' || c == '*' || c == '/';
@@ -307,14 +251,15 @@ public class Calculate {
 
         System.out.println("测试开始");
 
-        /* str ="3*2+2/1-(2-1)";
+         str ="3*2+2/1-2-1";
         Calculate expression = new Calculate();
 
         Queue<String> queue = expression.toSuffixExpression(str);
 
-        System.out.println("测试答案"+queue);*/
+        System.out.println("测试答案"+queue);
 
-        System.out.println("测试完毕"+Save.string);
+        System.out.println("测试完毕"+expression.calculate(queue).getNumerator()
+                +"/"+expression.calculate(queue).getDenominator());
 
     }
 
