@@ -1,6 +1,5 @@
 import javax.sound.midi.Soundbank;
 import java.io.*;
-import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -89,7 +88,7 @@ public class Calculate {
     /**
      * 后缀表达式求值
      *
-     * @param queue
+     * @param
      * @return
      */
   /*  public int solve(Queue<String> queue) {//不考虑分数的计算
@@ -176,15 +175,16 @@ public class Calculate {
 
     public Fraction calculate(Queue<String> queue) {//考虑分数的计算，直接把数字转化为fraction对象，再压入fraction栈
         Stack<Fraction> fracStack = new Stack<>();
+
+        String string = "";//中间结果字符串
+
         while (!queue.isEmpty() ) {
             // 从队列中出队
             String s = queue.remove();
-            boolean flag = false;//标志值，用于合法性检验
 
             // 如果是数字，就压入栈中
             if (isDigital(s.charAt(0))) {
                 //parseInt(String s): 返回用十进制参数表示的整数值。
-               // System.out.println("当前操作的数字"+Integer.parseInt(s));
                 Fraction f = new Fraction(Integer.parseInt(s));
                 fracStack.push(f);
              //   System.out.println("压入栈的f："+f.getNumerator()+"/"+f.getDenominator());
@@ -205,22 +205,9 @@ public class Calculate {
                 * */
                 if ( c == '-' ) {
                     f = f2.sub(f1);//若结果为负，break；返回-1，用以标记表达式不合法
-                    f.Appointment();
-                  /*  System.out.println("检验"+f.getNumerator()+"\t"+f.getDenominator());
-                    System.out.println("合法性检验"+f.getDenominator());*/
-                    if (f.getDenominator() <= 0 || f.getNumerator() < 0  ) {//分母小于零出现负数
-                      /*  System.out.println("haha");
-
-                        System.out.println("出现负数");
-                        flag = true;
-                       // continue;
-                        System.out.println("队列"+queue);
-
-                        while (!queue.isEmpty())
-                            queue.remove();
-
-                        System.out.println("队列"+queue);
-*/
+                    f.Appointment();//简单约分
+                    if (f.getDenominator() < 0 || f.getNumerator() < 0  ) {//分母小于零出现负数
+                        fracStack.push(new Fraction(100000));
                         break;
 
                     }
@@ -228,35 +215,15 @@ public class Calculate {
 
                 if ( c == '/'){
                     f2.Appointment();
-/*
-                    System.out.println("被除数"+f2.getNumerator()+"/"+f2.getDenominator());
-                    System.out.println("除数"+f1.getNumerator()+"/"+f1.getDenominator());*/
                     if(f1.getDenominator()==0 || f1.getNumerator() ==0){//如果分数为0
-                     //   System.out.println("除数为0");
-                        flag = true;
-                        //continue;
+                      fracStack.push(new Fraction(100000));
                         break;
                     }
-
-
-
-
-
                 }
-                /*  try {
-                    //将整数化为分数
-                    f1 = new Fraction(fracStack.pop().getNumerator(),fracStack.pop().getDenominator());
-                    f2 = new Fraction(fracStack.pop().getNumerator(),fracStack.pop().getDenominator());
-                }catch (EmptyStackException e){
-                    System.out.println("栈空");
 
-                }*/
-
-              /*  System.out.println("第一个分数"+f1.getNumerator()+"/"+f1.getDenominator());
-                System.out.println("第二个分数"+f2.getNumerator()+"/"+f2.getDenominator());*/
-
-
-
+                /*
+                * 栈顶元素的四则运算
+                * */
                 switch (c) {
                     case '+': {
                         fracStack.push(f2.add(f1));
@@ -282,52 +249,60 @@ public class Calculate {
 
                     }
                 }//switch case 结束的地方
-            }
-        }
+             /*   System.out.println("数字栈顶的元素"+fracStack.peek().getNumerator()
+                        +"/"+fracStack.peek().getDenominator());
 
-        if(fracStack.isEmpty() == true){
-            Fraction f = new Fraction(100000);
+                string += fracStack.peek().getNumerator()
+                        +"/"+fracStack.peek().getDenominator()+"\t";*///计算中间结果
+            }
+
+
+
+        }
+      //  System.out.println("字符串"+string);
+
+        if(fracStack.isEmpty() == true || fracStack.peek().getNumerator() == 100000){//注意分子的值
+            Fraction f = new Fraction(100000);//不合法的式子
             return f;
         }else
         return  fracStack.pop();
+    }
+
+
+    public void compare(String str){//存放每一次计算过程的中间结果
+        String []strings = new String[1000];
+
 
     }
+
 
 
     public static void main(String[] args) throws IOException {
 
 
         BufferedReader file = null;
-        try {
-            file = new BufferedReader(new InputStreamReader(new FileInputStream("src/expression.txt")));
+        try {//
+            file = new BufferedReader(new InputStreamReader(new FileInputStream("textFile/Expression.txt")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         String str ="";
         while(( str = file.readLine())!=null){
-          //  System.out.println("算术表达式："+str);
+            System.out.println("cal算术表达式："+str);
         Calculate expression = new Calculate();
 
        Queue<String> queue = expression.toSuffixExpression(str);
 
         //输出有误，3*2+2/1-(2-1)，优先级出错：后缀表达式[3, 2, *, 2, 1, /, 2, 1, -, -, +]，
         // 正确的为[3, 2, *, 2, 1, / , +,2, 1, -, -]
-       // System.out.println("后缀表达式"+queue);
-          //  String str1 ="";
-         //  String str2 ="";
-        Fraction fraction = expression.calculate(queue);
-      //  System.out.println("正确答案："+expression.solve(queue));//可以看到表达的过程
-         //   System.out.println("正确答案："+expression.calculate(str));
-         //   properFraction proFrac = new properFraction();
-         //  proFrac.transferFraction();
-           // proFrac.transferFraction(fraction);//对结果进行化简
-            //System.out.println("calcula标准答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
+        //后期需找出原因
+        Fraction fraction = expression.calculate(queue);//未化简
+        System.out.println("答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
 
         }
 
+
     }
-
-
 
 
 }

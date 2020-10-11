@@ -1,6 +1,4 @@
 import java.util.Random;
-import java.util.Stack;
-
 /*
  * 构建一个分数类，用来表示分数，封装相关的方法
  */
@@ -8,7 +6,6 @@ public class Fraction {
     /*
     * 成员变量，可以直接使用；后期代码整理时，用成员变量代替一部分getDenominator或者getNumerator的方法
     * */
-
     private int denominator;// 分母
     private int numerator;// 分子
 
@@ -26,9 +23,11 @@ public class Fraction {
 
     public Fraction() {
         super();
+
     }
 
     // 判断构建的是一个分数还是一个整数，不超过limit的数值
+    //暂时还没用到
     public Fraction(boolean l, int limit) {//根据给定的范围和生成分数整数的要求，生成符合要求的数
         Random r = new Random();
         // 这是一个分数
@@ -44,31 +43,31 @@ public class Fraction {
 //				System.out.println("会生成0："+b);
             }
 //			System.out.println("不会生成0："+b);
-            this.denominator = b;
-            this.numerator = a;
+            this.denominator = b;//分母
+            this.numerator = a;//分子
 
             // 这是一个整数
         } else {
             int b = r.nextInt(limit);
-            this.denominator = 1;
-            this.numerator = b;
+            this.denominator = 1;//分母
+            this.numerator = b;//分子
         }
     }
 
-    public int getDenominator() {
+    public int getDenominator() {//获取分母
         return denominator;
 
     }
 
-    public void setDenominator(int denominator) {
+    public void setDenominator(int denominator) {//设置分母
         this.denominator = denominator;
     }
 
-    public int getNumerator() {
+    public int getNumerator() {//获取分子
         return numerator;
     }
 
-    public void setNumerator(int numerator) {
+    public void setNumerator(int numerator) {//设置分子
         this.numerator = numerator;
     }
 
@@ -129,7 +128,7 @@ public class Fraction {
         this.denominator /= gcd;
     }
 
-    public  String transferFraction(Fraction fraction){
+    public  String transferFraction(Fraction fraction){//对分数进行约分化简
         int a = fraction.numerator;
         int b = fraction.denominator;
         int c = a/gcd(a,b);
@@ -139,67 +138,19 @@ public class Fraction {
         String str = "";
         if(f==0){
             str += e;
-           // System.out.println("化简后的分数为"+e);
         }else if(e!=0){
-           // System.out.println("化简后的带分数为"+e+"'"+f+"/"+d);
             str = e+"'"+f+"/"+d;
         }else{
-          //  System.out.println("化简后的分数为"+f+"/"+d);
             str +=f+"/"+d ;
         }
         return str;
     }
 
-
-    public int existZero(){
+    public int existZero(){//判断有没有出现0
         if(this.numerator<0||this.denominator<0){
             return 0;
         }else {
             return 1;
         }
-    }
-
-    public static void main(String[] args) {
-        Fraction f1 = new Fraction(0,1);
-        Fraction f2 = new Fraction(2,-6);
-        f1.Appointment();
-        System.out.println("分子"+f1.getNumerator());
-
-        System.out.println("分母"+f1.getDenominator());
-
-        f1.Appointment();//约分后若有负数，负数出现在分母；
-        f2.Appointment();
-
-        System.out.println("分子"+f2.getNumerator());
-        System.out.println("分母"+f2.getDenominator());
-
-
-        /*
-        * fraction栈的测试
-        * */
-    /*    Fraction f3 = new Fraction();
-        f3 = f1.add(f2);
-        // fraction3 = fraction1.sub(fraction2);
-        // fraction3 = fraction1.muti(fraction2);
-        //fraction3 = fraction1.div(fraction2);
-
-        int a = f3.numerator;
-        int b = f3.denominator;//结果没有化简.
-        System.out.println("f1+f2:"+a+"/"+b);
-        System.out.println("f1-f2:"+a+"/"+b);
-        System.out.println("f1*f2:"+a+"/"+b);
-        System.out.println("f1/f2:"+a+"/"+b);
-
-        Stack<Fraction> stack = new Stack<>();
-        stack.push(f1);
-        stack.push(f2);
-      //  stack.push(f3);
-        System.out.println(stack);
-        System.out.println("栈顶的分数"+stack.peek().getNumerator()+"/"+stack.peek().getDenominator());*/
-
-
-
-
-
     }
 }
