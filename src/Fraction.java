@@ -145,12 +145,4 @@ public class Fraction {
         }
         return str;
     }
-
-    public int existZero(){//判断有没有出现0
-        if(this.numerator<0||this.denominator<0){
-            return 0;
-        }else {
-            return 1;
-        }
-    }
 }

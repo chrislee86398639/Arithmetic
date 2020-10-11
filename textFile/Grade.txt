@@ -1,2 +1,2 @@
 Correct:0[]
-Wrong:5[0, 1, 2, 3, 4]
+Wrong:1[0]

@@ -12,7 +12,9 @@ public class Grade {
       * */
 
     Scanner sc = new Scanner(System.in);
+        System.out.println("请输入你的答案：");
         String str = sc.next();
+
          if (str.equals(s)){//接受控制台输入的式子str
              //不能直接写 str == s，可能str含有回车，导致不相等
             System.out.println("你真棒，答对了\n");

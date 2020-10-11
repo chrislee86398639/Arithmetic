@@ -1,4 +1,3 @@
-import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -8,8 +7,6 @@ import java.util.Stack;
 * 中缀转后缀，再通过栈来计算表达式的值，采用
 * */
 public class Calculate {
-
-
     /**
      * 计算表达式的值
      * @param s
@@ -64,7 +61,7 @@ public class Calculate {
                 } else if ('(' == stack.peek()) {
                     stack.push(c);
                     // 如果当前元素的优先级比符号栈的栈顶元素优先级高，则压入栈中
-                } else if (priority(c) > priority(stack.peek())) {
+                } else if (priority(c) > priority(stack.peek())) {//debug将大于出栈
                     stack.push(c);
                     // 如果此时遍历的运算符的优先级小于等于此时符号栈栈顶的运算符的优先级，
                     // 则将符号栈的栈顶元素弹出并且放到队列中，并且将正在遍历的符号压入符号栈
@@ -81,6 +78,7 @@ public class Calculate {
         while (!stack.isEmpty()) {
             queue.add(stack.pop() + "");
         }
+
 
         return queue;
     }
@@ -176,11 +174,14 @@ public class Calculate {
     public Fraction calculate(Queue<String> queue) {//考虑分数的计算，直接把数字转化为fraction对象，再压入fraction栈
         Stack<Fraction> fracStack = new Stack<>();
 
-        String string = "";//中间结果字符串
+        String str = "";//中间结果字符串
+        Save.string = "";//每一次操作开始就把string置为空
 
         while (!queue.isEmpty() ) {
+
             // 从队列中出队
             String s = queue.remove();
+           // Save.save(s);//保存结果
 
             // 如果是数字，就压入栈中
             if (isDigital(s.charAt(0))) {
@@ -249,17 +250,20 @@ public class Calculate {
 
                     }
                 }//switch case 结束的地方
-             /*   System.out.println("数字栈顶的元素"+fracStack.peek().getNumerator()
-                        +"/"+fracStack.peek().getDenominator());
 
-                string += fracStack.peek().getNumerator()
-                        +"/"+fracStack.peek().getDenominator()+"\t";*///计算中间结果
+                /*
+                * 用来查重*/
+                /*System.out.println("数字栈顶的元素"+fracStack.peek().getNumerator()
+                        +"/"+fracStack.peek().getDenominator());
+*/
+                str += fracStack.peek().getNumerator()
+                        +"/"+fracStack.peek().getDenominator()+" ";///计算中间结果
             }
 
-
-
         }
-      //  System.out.println("字符串"+string);
+
+        Save.save(str);//保存中间结果
+
 
         if(fracStack.isEmpty() == true || fracStack.peek().getNumerator() == 100000){//注意分子的值
             Fraction f = new Fraction(100000);//不合法的式子
@@ -269,20 +273,18 @@ public class Calculate {
     }
 
 
-    public void compare(String str){//存放每一次计算过程的中间结果
+   /* public void compare(String str){//存放每一次计算过程的中间结果
         String []strings = new String[1000];
 
 
     }
-
-
-
+*/
     public static void main(String[] args) throws IOException {
 
 
         BufferedReader file = null;
-        try {//
-            file = new BufferedReader(new InputStreamReader(new FileInputStream("textFile/Expression.txt")));
+        try {
+            file = new BufferedReader(new InputStreamReader(new FileInputStream("textFile/Expression.txt")));//会把NO.n 输入，可能会把n当作操作数
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -290,17 +292,29 @@ public class Calculate {
         while(( str = file.readLine())!=null){
             System.out.println("cal算术表达式："+str);
         Calculate expression = new Calculate();
+          //  System.out.println("中间结果"+Save.queue);
 
        Queue<String> queue = expression.toSuffixExpression(str);
 
         //输出有误，3*2+2/1-(2-1)，优先级出错：后缀表达式[3, 2, *, 2, 1, /, 2, 1, -, -, +]，
         // 正确的为[3, 2, *, 2, 1, / , +,2, 1, -, -]
-        //后期需找出原因
+        //后期需找出原因：初步判断为优先级判断时只是与前一个符号进行对比，可以尝试用while
         Fraction fraction = expression.calculate(queue);//未化简
         System.out.println("答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
 
         }
 
+
+        System.out.println("测试开始");
+
+        /* str ="3*2+2/1-(2-1)";
+        Calculate expression = new Calculate();
+
+        Queue<String> queue = expression.toSuffixExpression(str);
+
+        System.out.println("测试答案"+queue);*/
+
+        System.out.println("测试完毕"+Save.string);
 
     }
 
