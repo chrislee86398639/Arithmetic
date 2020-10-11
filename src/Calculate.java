@@ -197,9 +197,7 @@ public class Calculate {
 
                 /*
                 * 用来查重*/
-                /*System.out.println("数字栈顶的元素"+fracStack.peek().getNumerator()
-                        +"/"+fracStack.peek().getDenominator());
-*/
+
                 str += fracStack.peek().getNumerator()
                         +"/"+fracStack.peek().getDenominator()+" ";///计算中间结果
             }
@@ -216,13 +214,6 @@ public class Calculate {
         return  fracStack.pop();
     }
 
-
-   /* public void compare(String str){//存放每一次计算过程的中间结果
-        String []strings = new String[1000];
-
-
-    }
-*/
     public static void main(String[] args) throws IOException {
 
 
@@ -236,30 +227,18 @@ public class Calculate {
         while(( str = file.readLine())!=null){
             System.out.println("cal算术表达式："+str);
         Calculate expression = new Calculate();
-          //  System.out.println("中间结果"+Save.queue);
 
        Queue<String> queue = expression.toSuffixExpression(str);
 
         //输出有误，3*2+2/1-(2-1)，优先级出错：后缀表达式[3, 2, *, 2, 1, /, 2, 1, -, -, +]，
         // 正确的为[3, 2, *, 2, 1, / , +,2, 1, -, -]
-        //后期需找出原因：初步判断为优先级判断时只是与前一个符号进行对比，可以尝试用while
+        //后期需找出原因：初步判断为优先级判断时只是与前一个符号进行对比，可以尝试用while。
+            // 现在已经解决
         Fraction fraction = expression.calculate(queue);//未化简
         System.out.println("答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
 
         }
 
-
-        System.out.println("测试开始");
-
-         str ="3*2+2/1-2-1";
-        Calculate expression = new Calculate();
-
-        Queue<String> queue = expression.toSuffixExpression(str);
-
-        System.out.println("测试答案"+queue);
-
-        System.out.println("测试完毕"+expression.calculate(queue).getNumerator()
-                +"/"+expression.calculate(queue).getDenominator());
 
     }
 

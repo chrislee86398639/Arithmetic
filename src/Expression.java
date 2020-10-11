@@ -1,5 +1,3 @@
-import sun.net.RegisteredDomain;
-
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -17,10 +15,6 @@ public class Expression {
         int e2=  random.nextInt(limit);
         int e3=  random.nextInt(limit);
         int e4=  random.nextInt(limit);
-        /*int e1= (int) (Math.random()*10);
-        int e2= (int) (Math.random()*10);
-        int e3= (int) (Math.random()*10);
-        int e4= (int) (Math.random()*10);*/
         String str = new String();
 
         int []ints = {e1,e2,e3,e4};
@@ -41,14 +35,14 @@ public class Expression {
 
 
 
-    public void legalExp () throws IOException {//生成合法未重复的表达式
+    public void legalExp (Integer number,Integer limit) throws IOException {
+       /* 生成合法未重复的表达式，number表示题目数量,limit表示运算数范围*/
         int j = 0;//控制题目生成的数量
-        int limit = 10 ;//控制运算数的大小。可以接受从控制台输入
+
         String str1 = "";
         String str2 = "";//存放中间结果
         String str3 = "";//算术表达式，写入Expression.txt
         String str4 = "";//答案，写入Answer.txt
-
 
         HashMap<String, Integer> answers = new HashMap<String, Integer>();
 
@@ -79,28 +73,26 @@ public class Expression {
                 continue;
             }else{
                 answers.put(Save.string, null);
-                System.out.print("N0." + j + "不重复的式子"+"\t" + str1 + "\n");//输出合法且没有重复的式子
+                System.out.print("N0." + j + "合法且不重复的式子"+" " + str1 + "\n");//输出合法且没有重复的式子
 
                 str3 += "\t"+str1+"\n";
                 str4 += "N0."+j+"\t"+str1+str2+"\n";
                 j++;
             }
 
-        } while (j < 10000);
+        } while (j < number);
+        System.out.println("表达式生成完毕");
 
         writer.fileWrite(str3, Paths.get("textFile/Expression.txt"));//整个字符串
         writer.fileWrite(str4, Paths.get("textFile/Answer.txt"));//整个字符串
 
     }
 
-
-
-
     public static void main(String[] args) throws IOException {
 
         Expression exp = new Expression();
-          exp.legalExp();
-        System.out.println("答题完毕");
+        exp.legalExp(100,10);
+        System.out.println("表达式生成完毕");
 
     }
 
