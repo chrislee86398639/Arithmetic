@@ -231,18 +231,14 @@ public class Calculate {
         while(( str = file.readLine())!=null){
             System.out.println("cal算术表达式："+str);
         Calculate cal = new Calculate();
-
        Queue<String> queue = cal.toSuffixExpression(str);
-
         //输出有误，3*2+2/1-(2-1)，优先级出错：后缀表达式[3, 2, *, 2, 1, /, 2, 1, -, -, +]，
         // 正确的为[3, 2, *, 2, 1, / , +,2, 1, -, -]
         //后期需找出原因：初步判断为优先级判断时只是与前一个符号进行对比，可以尝试用while。
             // 现在已经解决
         Fraction fraction = cal.calculate(queue);//未化简
         System.out.println("答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
-
         }
-
         /*新bug，括号内超过两个运算数就报错Exception in thread "main" java.lang.RuntimeException: Illegal operator:(
         * */
         System.out.println("测试开始");
