@@ -25,8 +25,9 @@ public class Calculate {
         Stack<Character> stack = new Stack<>();
         Queue<String> queue = new LinkedList<>();
 
-        int index = 0;//队列标签
+        int index = 0;//字符串标签
         while (index < s.length()) {
+
             char c = s.charAt(index);
             // 如果是数字，就入队列
             if (isDigital(c)) {

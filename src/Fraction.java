@@ -26,50 +26,18 @@ public class Fraction {
 
     }
 
-    // 判断构建的是一个分数还是一个整数，不超过limit的数值
-    //暂时还没用到
-    public Fraction(boolean l, int limit) {//根据给定的范围和生成分数整数的要求，生成符合要求的数
-        Random r = new Random();
-        // 这是一个分数
-        if (l == true) {
-            int b = r.nextInt(limit);
-            System.out.println("生成的index为"+b);
-
-            int a = r.nextInt(limit);
-            System.out.println("生成的a为"+b);
-
-            while(b==0) {
-                b = r.nextInt(limit);
-//				System.out.println("会生成0："+b);
-            }
-//			System.out.println("不会生成0："+b);
-            this.denominator = b;//分母
-            this.numerator = a;//分子
-
-            // 这是一个整数
-        } else {
-            int b = r.nextInt(limit);
-            this.denominator = 1;//分母
-            this.numerator = b;//分子
-        }
-    }
 
     public int getDenominator() {//获取分母
         return denominator;
 
     }
 
-    public void setDenominator(int denominator) {//设置分母
-        this.denominator = denominator;
-    }
+
 
     public int getNumerator() {//获取分子
         return numerator;
     }
 
-    public void setNumerator(int numerator) {//设置分子
-        this.numerator = numerator;
-    }
 
 
 

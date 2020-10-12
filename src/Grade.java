@@ -1,3 +1,5 @@
+import org.omg.CORBA.ARG_OUT;
+
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -13,7 +15,7 @@ public class Grade {
         /*
          * 从命令行接受参数，题目的数量，和运算数的范围
          * */
-        int j = 0;
+        int j = 1;
         String str1 = "";//需计算的表达式
         String str2 = "";//计算的答案
         String str3 = "";//大体情况，写入Grade.txt
@@ -36,7 +38,7 @@ public class Grade {
             e.printStackTrace();
         }
         while ((str1 = file.readLine()) != null) {
-            System.out.println("NO." + j + " " + str1);
+            System.out.println(str1);//按照题目的格式输入时，注意题号是否会和运算数一起计算
             System.out.println("请输入你的答案(输入'quit'结束答题)：");
             str4 = sc.next();
             Calculate cal = new Calculate();
@@ -49,7 +51,6 @@ public class Grade {
                 while ((str1 = file.readLine()) != null) {
                     ++j;
                     wrong.add(j);
-                    System.out.println("j的值："+j+str1);
                 }//答题中止，未答的题目均算错误
                 System.out.println("j最后的值："+j);
                 break;
@@ -63,13 +64,14 @@ public class Grade {
 
             j++;
         }
+
         System.out.println("答题结束");
         str3 += "Correct:" + correct.size() + correct + "\n" +
                 "Wrong:" + wrong.size() + wrong + "\n";
         writer.fileWrite(str3, Paths.get("textFile/Grade.txt"));
         System.out.println("你共答对了" + correct.size() + "道题");
         System.out.println("你共错对了" + wrong.size() + "道题");
-        System.out.println("正确率为" + correct.size() * 1.0 / j * 100 + "%");//queue.size方法可以获得队列元素的个数*/
+        System.out.println("正确率为" + correct.size() / (j-1.0) * 100 + "%");//queue.size方法可以获得队列元素的个数*/
 
     }
 

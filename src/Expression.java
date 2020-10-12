@@ -37,7 +37,7 @@ public class Expression {
 
     public void legalExp (Integer number,Integer limit) throws IOException {
        /* 生成合法未重复的表达式，number表示题目数量,limit表示运算数范围*/
-        int j = 0;//控制题目生成的数量
+        int j = 1;//控制题目生成的数量,从1开始
 
         String str1 = "";
         String str2 = "";//存放中间结果
@@ -66,6 +66,8 @@ public class Expression {
             /*查重开始
             存放值的时候，如果先检测下碰撞，如果有碰撞，则break 跳出do while 循环
              * 如果没有碰撞，则存进去
+             通过比对中间结果是否相同,运算数在10以内，生成题目的上限是55778道题目，
+             随着运算数范围的缩小，上限更小
              * */
 
             if(answers.containsKey(Save.string)){
@@ -73,14 +75,15 @@ public class Expression {
                 continue;
             }else{
                 answers.put(Save.string, null);
-                System.out.print("N0." + j + "合法且不重复的式子"+" " + str1 + "\n");//输出合法且没有重复的式子
+               // System.out.print("NO."+j+" "+str1 + "\n");//输出合法且没有重复的式子
+                System.out.printf("NO.%4d      %s%n",j,str1);//格式化输出
 
-                str3 += "\t"+str1+"\n";
-                str4 += "N0."+j+"\t"+str1+str2+"\n";
+                str3 += j+"."+"四则运算题目"+j+"    "+str1+"\n";
+                str4 += j+"."+"答案"+j+"    "+str2+"\n";
                 j++;
             }
 
-        } while (j < number);
+        } while (j <= number);
         System.out.println("表达式生成完毕");
 
         writer.fileWrite(str3, Paths.get("textFile/Expression.txt"));//整个字符串
@@ -92,7 +95,7 @@ public class Expression {
 
         Expression exp = new Expression();
         exp.legalExp(100,10);
-        System.out.println("表达式生成完毕");
+       // System.out.println("表达式生成完毕");
 
     }
 
