@@ -39,9 +39,8 @@ public class Expression {
         return str;
     }
 
-
-
-    public void legalExp () throws IOException {//生成合法未重复的表达式
+    //专门用来测试能否生成10000道题的，不涉及对错判断直接一次性生成
+    public void legalExp (Integer i) throws IOException {//生成合法未重复的表达式
         int j = 0;//控制题目生成的数量
         int limit = 10 ;//控制运算数的大小。可以接受从控制台输入
         String str1 = "";
@@ -79,14 +78,14 @@ public class Expression {
                 continue;
             }else{
                 answers.put(Save.string, null);
-                System.out.print("N0." + j + "不重复的式子"+"\t" + str1 + "\n");//输出合法且没有重复的式子
+                System.out.print("N0." + j + "不重复的式子"+" " + str1 + "\n");//输出合法且没有重复的式子
 
                 str3 += "\t"+str1+"\n";
-                str4 += "N0."+j+"\t"+str1+str2+"\n";
+                str4 += "N0."+j+" "+str1+str2+"\n";
                 j++;
             }
 
-        } while (j < 10000);
+        } while (j < i);
 
         writer.fileWrite(str3, Paths.get("textFile/Expression.txt"));//整个字符串
         writer.fileWrite(str4, Paths.get("textFile/Answer.txt"));//整个字符串
@@ -99,7 +98,7 @@ public class Expression {
     public static void main(String[] args) throws IOException {
 
         Expression exp = new Expression();
-          exp.legalExp();
+          exp.legalExp(100);
         System.out.println("答题完毕");
 
     }

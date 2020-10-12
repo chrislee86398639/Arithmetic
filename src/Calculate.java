@@ -21,7 +21,7 @@ public class Calculate {
      * 将中缀表达式转化成后缀表达式
      */
 
-    private Queue<String> toSuffixExpression(String s) {//生成后缀表达式
+    public Queue<String> toSuffixExpression(String s) {//生成后缀表达式
         Stack<Character> stack = new Stack<>();
         Queue<String> queue = new LinkedList<>();
 
