@@ -7,33 +7,27 @@ import java.util.Random;
 * */
 
 public class Expression {
-    public String generateExp(Integer limit){//生成表达式，未经过合法性检验，限定运算数的大小
-        Random random = new Random();
-        random.nextInt(limit);
-
-        int e1=  random.nextInt(limit);
-        int e2=  random.nextInt(limit);
-        int e3=  random.nextInt(limit);
-        int e4=  random.nextInt(limit);
+    public String generateExp(Integer limit){//生成表达式，未过合法性检验，限定运算数的大小
+        Random rd = new Random();
+        rd.nextInt(limit);
+        int e1=  rd.nextInt(limit);
+        int e2=  rd.nextInt(limit);
+        int e3=  rd.nextInt(limit);
+        int e4=  rd.nextInt(limit);
         String str = new String();
+       // System.out.println("str的长度"+str.length());str.length()表示元素的个数
 
-        int []ints = {e1,e2,e3,e4};
-        char []chars ={'+','-','*','/'};
-
-        int []ints1 = {1,2,3};//控制选择的运算符(0-3)
-        int i = (int) (Math.random()*10%3);
-        for(int j = 0; j < ints1[i]; j++){//调整j的范围可以控制运算符的数目
-            int k = (int) (Math.random()*10%4);
-            str += ints[k] + " ";
-            str += chars[k]+ " ";//操作数与运算符需用空格隔开，以便后续区分÷和/
-
+        int []num = {e1,e2,e3,e4};//数字
+        char []opt ={'+','-','*','/'};//运算符
+        int []no = {1,2,3};//控制选择的运算符(0-3)
+        for(int j = 0; j <  no[rd.nextInt(3)] ; j++){//调整j的范围可以控制运算符的数目
+            str += num[rd.nextInt(4)]+" ";
+            str += opt[rd.nextInt(4)]+" ";//操作数与运算符需用空格隔开，以便后续区分÷和/
         }
-        int k = (int) (Math.random()*10%4);
-        str += ints[k] ;
+        str += num[rd.nextInt(4)]+" ";
+
         return str;
     }
-
-
 
     public void legalExp (Integer number,Integer limit) throws IOException {
        /* 生成合法未重复的表达式，number表示题目数量,limit表示运算数范围*/
@@ -93,9 +87,9 @@ public class Expression {
 
     public static void main(String[] args) throws IOException {
 
+
         Expression exp = new Expression();
-        exp.legalExp(100,10);
-       // System.out.println("表达式生成完毕");
+        exp.legalExp(10000,10);
 
     }
 
