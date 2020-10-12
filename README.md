@@ -73,7 +73,8 @@
 * 中缀转后缀时，采用一个队列和一个栈，数字输入到队列，运算符压入栈。在压入栈时，检查栈顶元素的优先级，要保证压入栈的元素的优先级最高。若栈顶元素大于等于想压入栈的元素，则把栈顶元素弹出，继续检查，直到被压入栈的元素的优先级是最高的。遇到"("先入栈，遇到")"把"("之后的元素弹出到队列，括号不输出到队列。
 * 后缀表达式求值时，遇到数字就压入栈，遇到运算符就弹出两个数字进行运算。因为最后的结果是分数，所以从一开始运算就把运算数全部转换为分数进行计算最后化简。
 * 主要代码:
-```public Fraction calculate(Queue<String> queue) {//考虑分数的计算，直接把数字转化为fraction对象，再压入fraction栈
+```
+public Fraction calculate(Queue<String> queue) {//考虑分数的计算，直接把数字转化为fraction对象，再压入fraction栈
     Stack<Fraction> fracStack = new Stack<>();
 
     String str = "";//中间结果字符串
@@ -221,15 +222,13 @@
     writer.fileWrite(str3, Paths.get("textFile/Expression.txt"));//整个字符串
     writer.fileWrite(str4, Paths.get("textFile/Answer.txt"));//整个字符串
 
-}
-```
+}```
 
 ##### `Fraction`
 
    * 这个类是实现分数运算的核心类，封装相关的方法：构造分数函数，四则运算等
    * 主要代码:
 ```
-
 public Fraction( int numerator,int denominator) {
     super();
     this.denominator = denominator;
@@ -283,11 +282,12 @@ public Fraction div(Fraction r) {
     return result;
 }
 ```
+
 ##### `Grade`类根据输入的答案进行答题记录，最后输入答题情况到`Grade`文本，并在控制台打印答题情况，计算正确率。
 
 * 主要代码
 ```
-   public void grade() throws IOException {
+public void grade() throws IOException {
         /*
          * 从命令行接受参数，题目的数量，和运算数的范围
          * */
@@ -349,8 +349,7 @@ public Fraction div(Fraction r) {
         System.out.println("你共错对了" + wrong.size() + "道题");
         System.out.println("正确率为" + correct.size() / (j-1.0) * 100 + "%");//queue.size方法可以获得队列元素的个数*/
 
-    }
-    
+    }   
  ```
 ##### `Save`类设置一个`private`的`String`变量对计算过程中的中间结果进行保存，用于查重时的中间结果比对。这样就可以不用以函数返回值的形式记录中间结果
 ##### `FileIO`把需要输出内容写入到对应的文本。
