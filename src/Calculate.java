@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.TransferQueue;
 
 /*
 * 中缀转后缀，再通过栈来计算表达式的值，采用
@@ -21,12 +22,12 @@ public class Calculate {
      * 将中缀表达式转化成后缀表达式
      */
 
-    private Queue<String> toSuffixExpression(String s) {//生成后缀表达式
+    public Queue<String> toSuffixExpression(String s) {//生成后缀表达式
         Stack<Character> stack = new Stack<>();
         Queue<String> queue = new LinkedList<>();
 
         int index = 0;//字符串标签
-        while (index < s.length()) {
+        while (index < s.length()) {//str.length()表示元素的个数
 
             char c = s.charAt(index);
             // 如果是数字，就入队列
@@ -67,7 +68,7 @@ public class Calculate {
                     /*queue.add(stack.pop() + "");
                     stack.push(c);*/
                     queue.add(stack.pop() + "");
-                    while(  !stack.isEmpty() && priority(c) == priority(stack.peek())) {
+                   while(  !stack.isEmpty() && priority(c) == priority(stack.peek()) ) {
                         queue.add(stack.pop() + "");
                     }
                     stack.push(c);
@@ -111,6 +112,8 @@ public class Calculate {
             case '*':
             case '/':
                 return 2;
+            case '(':
+                return 0;//左括号的优先级最低
             default:
                 throw new RuntimeException("Illegal operator:" + c);
         }
@@ -217,7 +220,7 @@ public class Calculate {
 
     public static void main(String[] args) throws IOException {
 
-
+/*
         BufferedReader file = null;
         try {
             file = new BufferedReader(new InputStreamReader(new FileInputStream("textFile/Expression.txt")));//会把NO.n 输入，可能会把n当作操作数
@@ -227,21 +230,28 @@ public class Calculate {
         String str ="";
         while(( str = file.readLine())!=null){
             System.out.println("cal算术表达式："+str);
-        Calculate expression = new Calculate();
-
-       Queue<String> queue = expression.toSuffixExpression(str);
-
+        Calculate cal = new Calculate();
+       Queue<String> queue = cal.toSuffixExpression(str);
         //输出有误，3*2+2/1-(2-1)，优先级出错：后缀表达式[3, 2, *, 2, 1, /, 2, 1, -, -, +]，
         // 正确的为[3, 2, *, 2, 1, / , +,2, 1, -, -]
         //后期需找出原因：初步判断为优先级判断时只是与前一个符号进行对比，可以尝试用while。
             // 现在已经解决
-        Fraction fraction = expression.calculate(queue);//未化简
+        Fraction fraction = cal.calculate(queue);//未化简
         System.out.println("答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
-
         }
+        /*新bug，括号内超过两个运算数就报错Exception in thread "main" java.lang.RuntimeException: Illegal operator:(
+        * */
+        System.out.println("测试开始");
+        String str = "2+6*(5-1+6/2-1+2)+1";
+        System.out.println("待测试的式子"+str);
+        Calculate cal = new Calculate();
+        Queue<String> queue = cal.toSuffixExpression(str);
+       Fraction f = cal.outcome(str);
+       f.transferFraction(f);
+        System.out.println("后缀表达式为"+queue);
 
+        System.out.println("计算结果"+f.transferFraction(f));
 
+        System.out.println("测试结束");
     }
-
-
 }
