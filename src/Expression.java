@@ -34,13 +34,13 @@ public class Expression {
         /*
         * 进行加入一个括号的操作,暂时未实现加入多个括号
         * */
-
         int []indexs = {0,4,8};//从indexs开始加左括号
         int []lens ={5,9,13};//括号的宽度，即从从indexs+len开始加右括号
         index = indexs[rd.nextInt(3)];
         len = lens[rd.nextInt(3)];
-      //  System.out.println("str0的长度"+str.length());
-        if( index+len< str.length() ||(index+len==str.length()+1 && index!= 0) ){
+       // System.out.println("str0的长度"+str.length());
+        if( index+len< str.length()-1 ||(index+len==str.length()+1 && index!= 0) ){
+            //去除首尾同时加括号的情况
             str1 = str.substring(0,index)+"( ";//substring 不包括index所对应的的字符
           //  System.out.println("str前面部分"+str1);
             str2 = str.substring(index,index+len)+" )";//i>0
