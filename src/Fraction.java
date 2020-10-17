@@ -32,8 +32,6 @@ public class Fraction {
 
     }
 
-
-
     public int getNumerator() {//获取分子
         return numerator;
     }

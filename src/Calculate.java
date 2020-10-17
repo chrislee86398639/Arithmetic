@@ -239,8 +239,14 @@ public class Calculate {
         Fraction fraction = cal.calculate(queue);//未化简
         System.out.println("答案"+fraction.getNumerator()+"/"+fraction.getDenominator());
         }
+<<<<<<< HEAD
         /*新bug，括号内超过两个运算数就报错Exception in thread "main" java.lang.RuntimeException: Illegal operator:(
         * */
+
+       /* 新bug，括号内超过两个运算数就报错Exception in thread "main" java.lang.RuntimeException: Illegal operator:(,
+                已经解决*/
+
+
         System.out.println("测试开始");
         String str = "2+6*(5-1+6/2-1+2)+1";
         System.out.println("待测试的式子"+str);

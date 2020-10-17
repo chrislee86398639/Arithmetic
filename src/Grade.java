@@ -52,7 +52,7 @@ public class Grade {
                     ++j;
                     wrong.add(j);
                 }//答题中止，未答的题目均算错误
-                System.out.println("j最后的值："+j);
+//                System.out.println("j最后的值："+j);
                 break;
             } else if (str4.equals(str2)) {
                 System.out.println("你真棒，答对了\n");
